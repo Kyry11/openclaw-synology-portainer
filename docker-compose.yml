@@ -55,7 +55,7 @@ services:
     #   - openclaw-macvlan
     entrypoint: ["node", "dist/index.js"]
 
-networks:
-  openclaw-macvlan:
-    external: true
-    name: ${OPENCLAW_MACVLAN_NETWORK:-macvlan}
+# networks:
+#   openclaw-macvlan:
+#     external: true
+#     name: ${OPENCLAW_MACVLAN_NETWORK:-macvlan}
