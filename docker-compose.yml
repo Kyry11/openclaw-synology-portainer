@@ -19,9 +19,9 @@ services:
       - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
     init: true
     restart: unless-stopped
-    networks:
-      openclaw-macvlan:
-        ipv4_address: ${OPENCLAW_MACVLAN_IP:-192.168.11.218}
+    # networks:
+    #   openclaw-macvlan:
+    #     ipv4_address: ${OPENCLAW_MACVLAN_IP:-192.168.11.218}
     command:
       [
         "node",
@@ -51,11 +51,11 @@ services:
     stdin_open: true
     tty: true
     init: true
-    networks:
-      - openclaw-macvlan
+    # networks:
+    #   - openclaw-macvlan
     entrypoint: ["node", "dist/index.js"]
 
-networks:
-  openclaw-macvlan:
-    external: true
-    name: ${OPENCLAW_MACVLAN_NETWORK:-macvlan}
+# networks:
+#   openclaw-macvlan:
+#     external: true
+#     name: ${OPENCLAW_MACVLAN_NETWORK:-macvlan}
