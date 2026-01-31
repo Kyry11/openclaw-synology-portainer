@@ -9,13 +9,16 @@ services:
       CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
     volumes:
-      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
-      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_CONFIG_DIR:-/volume1/docker/openclaw}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR:-/volume1/docker/openclaw/workspace}:/home/node/.openclaw/workspace
     ports:
       - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
       - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
     init: true
     restart: unless-stopped
+    networks:
+      openclaw-macvlan:
+        ipv4_address: ${OPENCLAW_MACVLAN_IP:-192.168.11.218}
     command:
       [
         "node",
@@ -37,9 +40,16 @@ services:
       CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
       CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
     volumes:
-      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
-      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_CONFIG_DIR:-/volume1/docker/openclaw}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR:-/volume1/docker/openclaw/workspace}:/home/node/.openclaw/workspace
     stdin_open: true
     tty: true
     init: true
+    networks:
+      - openclaw-macvlan
     entrypoint: ["node", "dist/index.js"]
+
+networks:
+  openclaw-macvlan:
+    external: true
+    name: ${OPENCLAW_MACVLAN_NETWORK:-macvlan}
